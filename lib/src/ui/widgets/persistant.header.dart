@@ -3,6 +3,9 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/rendering/sliver_persistent_header.dart';
 
+String desc =
+    'Yosemite is internationally for its granite cliffs, waterfalls, clean streams, giant sequoa groves, lakes, mountains, meadowns, glaciers and biological diversity';
+
 class PersistantHeader implements SliverPersistentHeaderDelegate {
   PersistantHeader({this.maxExtent, this.minExtent});
 
@@ -23,7 +26,7 @@ class PersistantHeader implements SliverPersistentHeaderDelegate {
                 end: Alignment.bottomCenter,
                 colors: [
                   Colors.transparent,
-                  Colors.black87,
+                  Colors.black87.withOpacity(calculateOpacity(shrinkOffset)),
                 ],
               ).createShader(
                 Rect.fromLTRB(0, -140, rect.width, rect.height - 20),
@@ -33,7 +36,7 @@ class PersistantHeader implements SliverPersistentHeaderDelegate {
             child: Container(
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: ExactAssetImage('images/river.jpg'),
+                  image: ExactAssetImage('images/river.jpeg'),
                   fit: BoxFit.cover,
                 ),
               ),
@@ -61,8 +64,13 @@ class PersistantHeader implements SliverPersistentHeaderDelegate {
                       style: TextStyle(color: Colors.white70, fontSize: 20.0),
                     ),
                     Text(
-                      'sjdins iuhfwir eiurghie ugiuaerh iaru hg iarhia wifh iu iw    uri  h iu uiruir ui uiraa uiiuuife ih',
-                      style: TextStyle(color: Colors.white70, fontSize: 18.0),
+                      desc,
+                      textAlign: TextAlign.justify,
+                      style: TextStyle(
+                        color: Colors.white70,
+                        fontSize: 14.0,
+                        letterSpacing: 0.5,
+                      ),
                     ),
                     Row(
                       children: <Widget>[
@@ -112,7 +120,13 @@ class PersistantHeader implements SliverPersistentHeaderDelegate {
   }
 
   double calculateOpacity(double shrinkOffset) {
-    return 1.0 - max(0.0, shrinkOffset) / (maxExtent - minExtent);
+    if (shrinkOffset + 10 > maxExtent - minExtent) return 0;
+    print(shrinkOffset);
+    print(maxExtent);
+    print(minExtent);
+    print(1.0 - max(0.0, shrinkOffset) / (maxExtent));
+    print('-------------------------------------------');
+    return 1.0 - max(0.0, shrinkOffset) / (maxExtent);
   }
 
   @override
